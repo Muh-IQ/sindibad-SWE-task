@@ -1,14 +1,17 @@
-﻿using Sindibad.Application.IRepositories;
+﻿using Microsoft.EntityFrameworkCore;
+using Sindibad.Application.IRepositories;
+using Sindibad.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Sindibad.Infrastructure.Persistence.Repositories;
 
 public class GenericRepository<T> : IGenericRepository<T>
-    where T : class
+    where T : class 
 {
     private readonly AppDbContext _context;
 
@@ -23,5 +26,13 @@ public class GenericRepository<T> : IGenericRepository<T>
         await _context.SaveChangesAsync();
 
         return entity;
+    }
+
+    public async Task<bool> ExistsAsync(
+    Expression<Func<T, bool>> predicate)
+    {
+        return await _context
+            .Set<T>()
+            .AnyAsync(predicate);
     }
 }

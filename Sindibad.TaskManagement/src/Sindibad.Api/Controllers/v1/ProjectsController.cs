@@ -6,13 +6,15 @@ using Sindibad.Api.Requests;
 using Sindibad.Application.Common.Results;
 using Sindibad.Application.DTOs;
 using Sindibad.Application.IServices;
+using Sindibad.Application.Services;
 using Sindibad.Domain.Entities;
+using Task = Sindibad.Domain.Entities.Task;
 
 namespace Sindibad.Api.Controllers.v1
 {
     [Route("api/v1/projects")]
     [ApiController]
-    public class ProjectsController(IProjectService projectService) : ControllerBase
+    public class ProjectsController(IProjectService projectService, ITaskService taskService) : ControllerBase
     {
         #region Create Project
         /// <summary>
@@ -72,8 +74,6 @@ namespace Sindibad.Api.Controllers.v1
             return result.ToHttpResult(StatusCodes.Status201Created);
         }
         #endregion
-
-
 
         #region Get All Projects
 
@@ -202,6 +202,73 @@ namespace Sindibad.Api.Controllers.v1
             var result = await projectService.GetByIdAsync(id);
 
             return result.ToHttpResult();
+        }
+
+        #endregion
+
+        #region Create Task
+
+        /// <summary>
+        /// Creates a new task for the specified project.
+        /// </summary>
+        /// <remarks>
+        /// Example request:
+        ///
+        /// <code>
+        /// POST /api/v1/projects/3fa85f64-5717-4562-b3fc-2c963f66afa6/tasks
+        /// Content-Type: application/json
+        ///
+        /// {
+        ///     "title": "Implement payment processing"
+        /// }
+        /// </code>
+        ///
+        /// Example successful response:
+        ///
+        /// <code>
+        /// HTTP 201 Created
+        ///
+        /// {
+        ///     "success": true,
+        ///     "data": {
+        ///         "id": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+        ///         "projectId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        ///         "title": "Implement payment processing",
+        ///         "completed": false,
+        ///         "createdAt": "2026-09-08T11:00:00Z"
+        ///     }
+        /// }
+        /// </code>
+        ///
+        /// Example response when the project does not exist:
+        ///
+        /// <code>
+        /// HTTP 404 Not Found
+        ///
+        /// {
+        ///     "success": false,
+        ///     "message": "Project not found.",
+        ///     "errors": [
+        ///         "Project not found."
+        ///     ]
+        /// }
+        /// </code>
+        /// </remarks>
+        /// <param name="projectId">The unique identifier of the project.</param>
+        /// <param name="request">The task creation request.</param>
+        /// <returns>The created task.</returns>
+        /// <response code="201">The task was created successfully.</response>
+        /// <response code="400">The request contains invalid data.</response>
+        /// <response code="404">The specified project was not found.</response>
+        [HttpPost("/{projectId:guid}/tasks")]
+        [ProducesResponseType(typeof(ApiResponse<Task>),StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ApiResponse),StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiResponse),StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Create(Guid projectId,CreateTaskRequest request)
+        {
+            var result = await taskService.CreateAsync(projectId,request.Title);
+
+            return result.ToHttpResult(StatusCodes.Status201Created);
         }
 
         #endregion

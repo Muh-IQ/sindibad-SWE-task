@@ -15,6 +15,7 @@ namespace Sindibad.Application
         {
 
             services.AddScoped<IProjectService, ProjectService>();
+            services.AddScoped<ITaskService, TaskService>();
 
             return services;
         }
