@@ -32,6 +32,7 @@ public class GenericRepository<T> : IGenericRepository<T>
     {
         return await _context
             .Set<T>()
+            .AsNoTracking()
             .AnyAsync(predicate);
     }
 
@@ -44,6 +45,13 @@ public class GenericRepository<T> : IGenericRepository<T>
     public async System.Threading.Tasks.Task UpdateAsync(T entity)
     {
         _context.Set<T>().Update(entity);
+
+        await _context.SaveChangesAsync();
+    }
+
+    public async System.Threading.Tasks.Task DeleteAsync(T entity)
+    {
+        _context.Set<T>().Remove(entity);
 
         await _context.SaveChangesAsync();
     }

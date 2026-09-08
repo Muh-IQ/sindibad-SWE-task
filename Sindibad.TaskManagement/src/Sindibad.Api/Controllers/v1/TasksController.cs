@@ -79,5 +79,52 @@ namespace Sindibad.Api.Controllers.v1
         }
 
         #endregion
+
+        #region Delete Task
+
+        /// <summary>
+        /// Deletes an existing task.
+        /// </summary>
+        /// <remarks>
+        /// Example request:
+        ///
+        /// <code>
+        /// DELETE /api/v1/tasks/7c9e6679-7425-40de-944b-e07fc1f90ae7
+        /// </code>
+        ///
+        /// Example successful response:
+        ///
+        /// <code>
+        /// HTTP 204 No Content
+        /// </code>
+        ///
+        /// Example response when the task does not exist:
+        ///
+        /// <code>
+        /// HTTP 404 Not Found
+        ///
+        /// {
+        ///     "success": false,
+        ///     "message": "Task not found.",
+        ///     "errors": [
+        ///         "Task not found."
+        ///     ]
+        /// }
+        /// </code>
+        /// </remarks>
+        /// <param name="id">The unique identifier of the task.</param>
+        /// <response code="204">The task was deleted successfully.</response>
+        /// <response code="404">The specified task was not found.</response>
+        [HttpDelete("{id:guid}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ApiResponse),StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var result = await taskService.DeleteAsync(id);
+
+            return result.ToHttpResult(StatusCodes.Status204NoContent);
+        }
+
+        #endregion
     }
 }

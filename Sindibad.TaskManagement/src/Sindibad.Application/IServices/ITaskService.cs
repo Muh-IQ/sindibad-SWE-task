@@ -10,4 +10,5 @@ public interface ITaskService
 {
     Task<Result<Sindibad.Domain.Entities.Task>> CreateAsync(Guid projectId, string title);
     Task<Result<Sindibad.Domain.Entities.Task>> UpdateAsync(Guid id,string title,bool completed);
+    Task<Result> DeleteAsync(Guid id);
 }

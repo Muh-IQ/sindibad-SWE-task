@@ -21,6 +21,7 @@ namespace Sindibad.Infrastructure.Persistence.Repositories
                     Name = project.Name,
                     CreatedAt = project.CreatedAt
                 })
+                .AsNoTracking()
                 .ToListAsync();
         }
 

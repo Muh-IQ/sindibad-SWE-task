@@ -13,6 +13,6 @@ public interface IGenericRepository<T>
     Task<bool> ExistsAsync(Expression<Func<T, bool>> predicate);
 
     Task<T?> GetByIdAsync(Expression<Func<T, bool>> predicate);
-
+    Task DeleteAsync(T entity);
     Task UpdateAsync(T entity);
 }

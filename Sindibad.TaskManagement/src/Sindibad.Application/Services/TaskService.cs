@@ -55,4 +55,18 @@ public class TaskService(IGenericRepository<Project> projectRepository,IGenericR
 
         return Result<Task>.Success(task);
     }
+
+    public async Task<Result> DeleteAsync(Guid id)
+    {
+        var task = await taskRepository.GetByIdAsync(t => t.Id == id);
+
+        if (task is null)
+        {
+            return Result.Failure(ErrorType.NotFound, "Task not found.");
+        }
+
+        await taskRepository.DeleteAsync(task);
+
+        return Result.Success();
+    }
 }
