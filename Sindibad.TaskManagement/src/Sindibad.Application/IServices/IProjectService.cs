@@ -12,4 +12,5 @@ namespace Sindibad.Application.IServices;
 public interface IProjectService
 {
     Task<Result<ProjectDTO>> CreateAsync(string projectName);
+    Task<Result<List<ProjectDTO>>> GetAllAsync();
 }
