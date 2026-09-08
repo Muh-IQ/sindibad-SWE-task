@@ -20,8 +20,4 @@
     <ProjectReference Include="..\Sindibad.Application\Sindibad.Application.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Persistence\Repositories\" />
-  </ItemGroup>
-
 </Project>

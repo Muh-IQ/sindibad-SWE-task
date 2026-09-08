@@ -1,6 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Sindibad.Application.IRepositories;
 using Sindibad.Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
+using Sindibad.Infrastructure.Persistence.Repositories;
 
 
 namespace Sindibad.Infrastructure
@@ -19,6 +21,8 @@ namespace Sindibad.Infrastructure
                 var connectionProvider = serviceProvider.GetRequiredService<ConnectionProvider>();
                 options.UseSqlServer(connectionProvider.GetConnectionString());
             });
+
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
             return services;
         }

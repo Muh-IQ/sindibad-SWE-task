@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Sindibad.Application.IServices;
+using Sindibad.Application.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +14,7 @@ namespace Sindibad.Application
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
 
-          
-
-
+            services.AddScoped<IProjectService, ProjectService>();
 
             return services;
         }
