@@ -51,7 +51,6 @@ The client does not send a request body.
 ```json
 {
   "success": true,
-  "message": "Projects retrieved successfully.",
   "data": [
     {
       "id": "11111111-1111-1111-1111-111111111111",

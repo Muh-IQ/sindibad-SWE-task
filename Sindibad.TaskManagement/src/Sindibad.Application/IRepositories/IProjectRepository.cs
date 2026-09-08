@@ -1,4 +1,5 @@
 ﻿using Sindibad.Application.DTOs;
+using Sindibad.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,6 @@ namespace Sindibad.Application.IRepositories
     public interface IProjectRepository
     {
         Task<List<ProjectDTO>> GetAllAsync();
+        Task<Project?> GetByIdAsync(Guid id);
     }
 }

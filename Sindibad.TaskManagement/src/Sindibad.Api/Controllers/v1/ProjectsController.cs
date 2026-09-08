@@ -14,6 +14,7 @@ namespace Sindibad.Api.Controllers.v1
     [ApiController]
     public class ProjectsController(IProjectService projectService) : ControllerBase
     {
+        #region Create Project
         /// <summary>
         /// Creates a new project.
         /// </summary>
@@ -70,7 +71,11 @@ namespace Sindibad.Api.Controllers.v1
             Result<ProjectDTO> result = await projectService.CreateAsync(request.Name);
             return result.ToHttpResult(StatusCodes.Status201Created);
         }
+        #endregion
 
+
+
+        #region Get All Projects
 
         /// <summary>
         /// Retrieves all projects.
@@ -132,5 +137,73 @@ namespace Sindibad.Api.Controllers.v1
 
             return result.ToHttpResult();
         }
+        #endregion
+
+
+        #region Get Project By Id
+
+        /// <summary>
+        /// Retrieves a project by its ID together with all of its tasks.
+        /// </summary>
+        /// <remarks>
+        /// Example request:
+        ///
+        /// <code>
+        /// GET /api/v1/projects/3fa85f64-5717-4562-b3fc-2c963f66afa6
+        /// </code>
+        ///
+        /// Example successful response:
+        ///
+        /// <code>
+        /// HTTP 200 OK
+        ///
+        /// {
+        ///     "success": true,
+        ///     "data": {
+        ///         "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        ///         "name": "Payment Platform",
+        ///         "createdAt": "2026-09-08T10:30:00Z",
+        ///         "tasks": [
+        ///             {
+        ///                 "id": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+        ///                 "projectId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        ///                 "title": "Implement payment processing",
+        ///                 "completed": false,
+        ///                 "createdAt": "2026-09-08T11:00:00Z"
+        ///             }
+        ///         ]
+        ///     }
+        /// }
+        /// </code>
+        ///
+        /// Example response when the project does not exist:
+        ///
+        /// <code>
+        /// HTTP 404 Not Found
+        ///
+        /// {
+        ///     "success": false,
+        ///     "message": "Project not found.",
+        ///     "errors": [
+        ///         "Project not found."
+        ///     ]
+        /// }
+        /// </code>
+        /// </remarks>
+        /// <param name="id">The unique identifier of the project.</param>
+        /// <returns>The requested project with all of its tasks.</returns>
+        /// <response code="200">The project was retrieved successfully.</response>
+        /// <response code="404">The specified project was not found.</response>
+        [HttpGet("{id:guid}")]
+        [ProducesResponseType(typeof(ApiResponse<Project>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            var result = await projectService.GetByIdAsync(id);
+
+            return result.ToHttpResult();
+        }
+
+        #endregion
     }
 }

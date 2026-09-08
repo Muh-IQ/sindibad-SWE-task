@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Sindibad.Application.DTOs;
 using Sindibad.Application.IRepositories;
+using Sindibad.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,13 @@ namespace Sindibad.Infrastructure.Persistence.Repositories
                     CreatedAt = project.CreatedAt
                 })
                 .ToListAsync();
+        }
+
+        public async Task<Project?> GetByIdAsync(Guid id)
+        {
+            return await context.Projects
+                .Include(p => p.Tasks)
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
     }
 }

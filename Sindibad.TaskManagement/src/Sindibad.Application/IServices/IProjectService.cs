@@ -13,4 +13,5 @@ public interface IProjectService
 {
     Task<Result<ProjectDTO>> CreateAsync(string projectName);
     Task<Result<List<ProjectDTO>>> GetAllAsync();
+    Task<Result<Project>> GetByIdAsync(Guid id);
 }

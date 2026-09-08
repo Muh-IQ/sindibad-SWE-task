@@ -41,4 +41,17 @@ public class ProjectService(IGenericRepository<Project> repository, IProjectRepo
         return Result<List<ProjectDTO>>.Success(projects);
     }
 
+    public async Task<Result<Project>> GetByIdAsync(Guid id)
+    {
+        var project = await projectRepository.GetByIdAsync(id);
+
+        if (project is null)
+        {
+            return Result<Project>.Failure(ErrorType.NotFound,
+                "Project not found.");
+        }
+
+        return Result<Project>.Success(project);
+    }
+
 }

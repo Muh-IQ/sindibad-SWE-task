@@ -43,7 +43,6 @@ The client sends a project name in the request body:
 ```json
 {
   "success": true,
-  "message": "Operation Succeeded",
   "data": {
     "id": "guid",
     "name": "Payment Platform",
