@@ -11,7 +11,7 @@ using Task = Sindibad.Domain.Entities.Task;
 
 namespace Sindibad.Application.Services;
 
-public class TaskService(IGenericRepository<Project> projectRepository,IGenericRepository<Task> taskRepository) : ITaskService
+public class TaskService(IGenericRepository<Project> projectRepository,IGenericRepository<Task> taskRepository, IGenericRepository<Task> GtaskRepository) : ITaskService
 {
    
 
@@ -39,5 +39,20 @@ public class TaskService(IGenericRepository<Project> projectRepository,IGenericR
         return Result<Task>.Success(createdTask);
     }
 
-   
+    public async Task<Result<Task>> UpdateAsync(Guid id, string title, bool completed)
+    {
+        var task = await taskRepository.GetByIdAsync(t => t.Id == id);
+
+        if (task is null)
+        {
+            return Result<Task>.Failure(ErrorType.NotFound,"Task not found.");
+        }
+
+        task.Title = title;
+        task.Completed = completed;
+
+        await taskRepository.UpdateAsync(task);
+
+        return Result<Task>.Success(task);
+    }
 }

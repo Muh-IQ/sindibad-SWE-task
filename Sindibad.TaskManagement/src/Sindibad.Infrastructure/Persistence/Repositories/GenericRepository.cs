@@ -28,11 +28,23 @@ public class GenericRepository<T> : IGenericRepository<T>
         return entity;
     }
 
-    public async Task<bool> ExistsAsync(
-    Expression<Func<T, bool>> predicate)
+    public async Task<bool> ExistsAsync(Expression<Func<T, bool>> predicate)
     {
         return await _context
             .Set<T>()
             .AnyAsync(predicate);
+    }
+
+    public async Task<T?> GetByIdAsync(Expression<Func<T, bool>> predicate)
+    {
+        return await _context
+            .Set<T>()
+            .FirstOrDefaultAsync(predicate);
+    }
+    public async System.Threading.Tasks.Task UpdateAsync(T entity)
+    {
+        _context.Set<T>().Update(entity);
+
+        await _context.SaveChangesAsync();
     }
 }

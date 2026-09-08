@@ -260,7 +260,7 @@ namespace Sindibad.Api.Controllers.v1
         /// <response code="201">The task was created successfully.</response>
         /// <response code="400">The request contains invalid data.</response>
         /// <response code="404">The specified project was not found.</response>
-        [HttpPost("/{projectId:guid}/tasks")]
+        [HttpPost("{projectId:guid}/tasks")]
         [ProducesResponseType(typeof(ApiResponse<Task>),StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ApiResponse),StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiResponse),StatusCodes.Status404NotFound)]
