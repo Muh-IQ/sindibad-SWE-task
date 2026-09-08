@@ -11,6 +11,7 @@ namespace Sindibad.Infrastructure.Persistence
         private readonly string _connectionString;
 
         // Constructor reads the connection string from an environment variable of windows system   
+        // Server=.;Database=Sindibad;Integrated Security=SSPI;TrustServerCertificate=True;
         public ConnectionProvider()
         {
             _connectionString = Environment.GetEnvironmentVariable("SINDIBAD____DB_CONNECTION")
